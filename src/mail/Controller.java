@@ -45,14 +45,14 @@ public class Controller  implements Initializable {
 
             @Override
             public void handle(ActionEvent event) {
-                System.out.println("Mehli sagt Tschüss!");
+                System.out.println("Mehli setzt den BasePath");
             }
         });
         filterSetFilter.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
             public void handle(ActionEvent event) {
-                System.out.println("Mehli sagt Tschüss!");
+                System.out.println("Mehli setzt den Filter");
             }
         });
     }
