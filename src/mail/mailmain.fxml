@@ -15,22 +15,22 @@
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
-              <MenuItem fx:id="fileexit" mnemonicParsing="false" text="Exit" />
+              <MenuItem fx:id="fileExit" mnemonicParsing="false" text="Exit" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Edit">
             <items>
-              <MenuItem mnemonicParsing="false" text="Set Base Path" />
+              <MenuItem fx:id="editBasePath" mnemonicParsing="false" text="Set Base Path" />
             </items>
           </Menu>
             <Menu mnemonicParsing="false" text="Filter">
               <items>
-                <MenuItem mnemonicParsing="false" text="Set Filter" />
+                <MenuItem fx:id="filterSetFilter" mnemonicParsing="false" text="Set Filter" />
               </items>
             </Menu>
           <Menu mnemonicParsing="false" text="Help">
             <items>
-              <MenuItem fx:id="helpabout" mnemonicParsing="false" text="About" />
+              <MenuItem fx:id="helpAbout" mnemonicParsing="false" text="About" />
             </items>
           </Menu>
         </menus>

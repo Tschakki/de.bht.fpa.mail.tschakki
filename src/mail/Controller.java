@@ -13,9 +13,13 @@ import java.awt.*;
 
 public class Controller  implements Initializable {
         @FXML
-        private MenuItem fileexit;
+        private MenuItem fileExit;
         @FXML
-        private MenuItem helpabout;
+        private MenuItem helpAbout;
+        @FXML
+        private MenuItem editBasePath;
+        @FXML
+        private MenuItem filterSetFilter;
 
     public void handleMenuAction(ActionEvent event) {
         System.out.println("Exit");
@@ -23,18 +27,32 @@ public class Controller  implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        fileexit.setOnAction(new EventHandler<ActionEvent>() {
+        fileExit.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
             public void handle(ActionEvent event) {
                 System.out.println("Mehli sagt Tschüss!");
             }
         });
-        helpabout.setOnAction(new EventHandler<ActionEvent>() {
+        helpAbout.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
             public void handle(ActionEvent event) {
                 System.out.println("Über Mehli gibt es viel wichtiges zu wissen!");
+            }
+        });
+        editBasePath.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                System.out.println("Mehli sagt Tschüss!");
+            }
+        });
+        filterSetFilter.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                System.out.println("Mehli sagt Tschüss!");
             }
         });
     }
