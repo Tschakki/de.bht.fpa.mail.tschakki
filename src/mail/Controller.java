@@ -25,32 +25,27 @@ public class Controller  implements Initializable {
         System.out.println("Exit");
     }
 
-    @Override
     public void initialize(URL location, ResourceBundle resources) {
         fileExit.setOnAction(new EventHandler<ActionEvent>() {
 
-            @Override
             public void handle(ActionEvent event) {
                 System.out.println("Mehli sagt Tschüss!");
             }
         });
         helpAbout.setOnAction(new EventHandler<ActionEvent>() {
 
-            @Override
             public void handle(ActionEvent event) {
                 System.out.println("Über Mehli gibt es viel wichtiges zu wissen!");
             }
         });
         editBasePath.setOnAction(new EventHandler<ActionEvent>() {
 
-            @Override
             public void handle(ActionEvent event) {
                 System.out.println("Mehli setzt den BasePath");
             }
         });
         filterSetFilter.setOnAction(new EventHandler<ActionEvent>() {
 
-            @Override
             public void handle(ActionEvent event) {
                 System.out.println("Mehli setzt den Filter");
             }
