@@ -21,7 +21,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("mailmain.fxml"));
-        primaryStage.setTitle("FPA: MailClient");
+        primaryStage.setTitle("FPA: Mehli-MailClient");
         primaryStage.getIcons().add(new Image("cat32.png"));
         primaryStage.setScene(new Scene(root, 1000, 600));
         primaryStage.show();
@@ -46,7 +46,7 @@ public class Main extends Application {
      * Returns the data as an observable list of Persons.
      * @return
      */
-    public ObservableList<Message> getPersonData() {
+    public ObservableList<Message> getMessageData() {
         return messageData;
     }
 
