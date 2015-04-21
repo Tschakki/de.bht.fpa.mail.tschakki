@@ -61,12 +61,14 @@ public class Controller  implements Initializable {
     @FXML
     private void initialize() {
         // Initialize the person table with the two columns.
-        importanceOfMessageColumn.setCellValueFactory(cellData -> cellData.getValue().importanceOfMessageProperty());
-        receivedAtColumn.setCellValueFactory(cellData -> cellData.getValue().receivedAtProperty());
-        readStatusColumn.setCellValueFactory(cellData -> cellData.getValue().readStatusProperty());
-        senderColumn.setCellValueFactory(cellData -> cellData.getValue().senderProperty().get().nameProperty());
+        //importanceOfMessageColumn.setCellValueFactory(cellData -> cellData.getValue().importanceOfMessageProperty());
+        //receivedAtColumn.setCellValueFactory(cellData -> cellData.getValue().receivedAtProperty());
+        readStatusColumn.setCellValueFactory(cellData -> cellData.getValue().readStatusProperty().asObject());
+        //senderColumn.setCellValueFactory(cellData -> cellData.getValue().senderProperty().get().nameProperty());
         subjectColumn.setCellValueFactory(cellData -> cellData.getValue().subjectProperty());
         generateMessages();
+        System.out.println(messageData.toString());
+        System.out.println("test");
         messageTable.setItems(messageData);
     }
 
@@ -87,11 +89,12 @@ public class Controller  implements Initializable {
         return messageData;
     }
 
-    public void handleMenuAction(ActionEvent event) {
-        System.out.println("Exit");
-    }
+   // public void handleMenuAction(ActionEvent event) {
+     //   System.out.println("Exit");
+    //}
 
     public void initialize(URL location, ResourceBundle resources) {
+        System.out.println("test");
         fileExit.setOnAction(new EventHandler<ActionEvent>() {
 
             public void handle(ActionEvent event) {
@@ -116,5 +119,6 @@ public class Controller  implements Initializable {
                 System.out.println("Mehli setzt den Filter");
             }
         });
+        initialize();
     }
 }
