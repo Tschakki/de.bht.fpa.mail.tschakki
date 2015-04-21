@@ -1,4 +1,5 @@
 package mail;
+import controller.Controller;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -6,8 +7,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import model.Message;
+
+import java.io.IOException;
 
 
 public class Main extends Application {
@@ -21,32 +25,11 @@ public class Main extends Application {
         primaryStage.show();
     }
 
-    private ObservableList<Message> messageData = FXCollections.observableArrayList();
-
-    public Main() {
-        // Add some sample data
-        messageData.add(new Message());
-        messageData.add(new Message());
-        messageData.add(new Message());
-        messageData.add(new Message());
-        messageData.add(new Message());
-        messageData.add(new Message());
-        messageData.add(new Message());
-        messageData.add(new Message());
-        messageData.add(new Message());
-    }
-
-    /**
-     * Returns the data as an observable list of Persons.
-     * @return
-     */
-    public ObservableList<Message> getMessageData() {
-        return messageData;
-    }
-
 
 
     public static void main(String[] args) {
         launch(args);
     }
+
+
 }

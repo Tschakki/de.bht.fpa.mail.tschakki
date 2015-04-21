@@ -44,12 +44,12 @@
             <items>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                     <children>
-                        <TableView prefHeight="281.0" prefWidth="711.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <TableView fx:id="messageTable" prefHeight="281.0" prefWidth="711.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <columns>
-                                <TableColumn prefWidth="66.0" text="Priority" />
-                                <TableColumn minWidth="3.0" prefWidth="100.0" text="Recieved" />
-                                <TableColumn prefWidth="52.0" text="Read" />
-                                <TableColumn prefWidth="199.0" text="Sender" />
+                                <TableColumn fx:id="importanceOfMessageColumn" prefWidth="66.0" text="Priority" />
+                                <TableColumn fx:id="receivedAtColumn" minWidth="3.0" prefWidth="100.0" text="Recieved" />
+                                <TableColumn fx:id="readStatusColumn" prefWidth="52.0" text="Read" />
+                                <TableColumn fx:id="senderColumn" prefWidth="199.0" text="Sender" />
                                 <TableColumn minWidth="0.0" prefWidth="297.0" text="Subject" />
                             </columns>
                      <columnResizePolicy>

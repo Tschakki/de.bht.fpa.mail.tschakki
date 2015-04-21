@@ -1,5 +1,7 @@
 package controller;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -17,6 +19,8 @@ import model.MessageImportance;
 import java.awt.*;
 
 public class Controller  implements Initializable {
+
+    private ObservableList<Message> messageData = FXCollections.observableArrayList();
         @FXML
         private MenuItem fileExit;
         @FXML
@@ -42,21 +46,6 @@ public class Controller  implements Initializable {
     @FXML
     private TableColumn<Message, String> recipientsColumn;
 
-    @FXML
-    private Label firstNameLabel;
-    @FXML
-    private Label lastNameLabel;
-    @FXML
-    private Label streetLabel;
-    @FXML
-    private Label postalCodeLabel;
-    @FXML
-    private Label cityLabel;
-    @FXML
-    private Label birthdayLabel;
-
-    // Reference to the main application.
-    private Main mainApp;
 
     /**
      * The constructor.
@@ -77,18 +66,25 @@ public class Controller  implements Initializable {
         readStatusColumn.setCellValueFactory(cellData -> cellData.getValue().readStatusProperty());
         senderColumn.setCellValueFactory(cellData -> cellData.getValue().senderProperty().get().nameProperty());
         subjectColumn.setCellValueFactory(cellData -> cellData.getValue().subjectProperty());
+        generateMessages();
+        messageTable.setItems(messageData);
     }
 
-    /**
-     * Is called by the main application to give a reference back to itself.
-     *
-     * @param mainApp
-     */
-    public void setMainApp(Main mainApp) {
-        this.mainApp = mainApp;
+    private void generateMessages(){
+        Message nachricht = new Message();
+        nachricht.setSubject("Betreff der Nachricht");
+        //nachricht. setSender("flying@cat.org");
+        messageData.add(nachricht);
+        messageData.add(nachricht);
+        messageData.add(nachricht);
+        messageData.add(nachricht);
+        messageData.add(nachricht);
+        messageData.add(nachricht);
 
-        // Add observable list data to the table
-        messageTable.setItems(mainApp.getMessageData());
+    }
+
+    public ObservableList<Message> getMessageData() {
+        return messageData;
     }
 
     public void handleMenuAction(ActionEvent event) {
