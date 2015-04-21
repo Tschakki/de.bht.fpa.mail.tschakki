@@ -1,4 +1,4 @@
-package mail;
+package controller;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -7,12 +7,12 @@ import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import messages.Message;
-import messages.MessageImportance;
+import mail.Main;
+import model.Message;
+import model.MessageImportance;
 
 import java.awt.*;
 

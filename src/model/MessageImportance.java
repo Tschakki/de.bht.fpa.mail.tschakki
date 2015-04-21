@@ -1,4 +1,4 @@
-package messages;
+package model;
 /**
  * Created by Benjamin Haupt on 03.04.15.
  */
