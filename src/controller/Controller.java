@@ -25,7 +25,6 @@ import static java.time.LocalDate.*;
 
 public class Controller  implements Initializable {
 
-    private ObservableList<Message> messageData = FXCollections.observableArrayList();
         @FXML
         private MenuItem fileExit;
         @FXML
@@ -34,22 +33,7 @@ public class Controller  implements Initializable {
         private MenuItem editBasePath;
         @FXML
         private MenuItem filterSetFilter;
-    @FXML
-    private TableView<Message> messageTable;
-    @FXML
-    private TableColumn<Message, MessageImportance> importanceOfMessageColumn;
-    @FXML
-    private TableColumn<Message, LocalDateTime> receivedAtColumn;
-    @FXML
-    private TableColumn<Message, Boolean> readStatusColumn;
-    @FXML
-    private TableColumn<Message, String> senderColumn;
-    @FXML
-    private TableColumn<Message, String> subjectColumn;
-    @FXML
-    private TableColumn<Message, String> textColumn;
-    @FXML
-    private TableColumn<Message, String> recipientsColumn;
+
 
 
     /**
@@ -63,37 +47,7 @@ public class Controller  implements Initializable {
      * Initializes the controller class. This method is automatically called
      * after the fxml file has been loaded.
      */
-    @FXML
-    private void initialize() {
-        // Initialize the person table with the two columns.
-        //importanceOfMessageColumn.setCellValueFactory(cellData -> cellData.getValue().importanceOfMessageProperty());
-        receivedAtColumn.setCellValueFactory(cellData -> cellData.getValue().receivedAtProperty());
-        readStatusColumn.setCellValueFactory(cellData -> cellData.getValue().readStatusProperty().asObject());
-        senderColumn.setCellValueFactory(cellData -> cellData.getValue().senderProperty().get().nameProperty());
-        subjectColumn.setCellValueFactory(cellData -> cellData.getValue().subjectProperty());
-        generateMessages();
-        System.out.println(messageData.toString());
-        System.out.println("test");
-        messageTable.setItems(messageData);
-    }
 
-    private void generateMessages(){
-        Message nachricht = new Message();
-        nachricht.setSubject("Betreff der Nachricht");
-        nachricht.setSender(new MessageStakeholder("Catz", "flying@cat.org"));
-        //nachricht.setImportanceOfMessage(new MessageImportance("low"));
-        nachricht.setReceivedAt(LocalDateTime.now());
-        messageData.add(nachricht);
-        messageData.add(nachricht);
-        messageData.add(nachricht);
-        messageData.add(nachricht);
-        messageData.add(nachricht);
-        messageData.add(nachricht);
-    }
-
-    public ObservableList<Message> getMessageData() {
-        return messageData;
-    }
 
    // public void handleMenuAction(ActionEvent event) {
      //   System.out.println("Exit");
@@ -125,6 +79,6 @@ public class Controller  implements Initializable {
                 System.out.println("Mehli setzt den Filter");
             }
         });
-        initialize();
+        //initialize();
     }
 }
