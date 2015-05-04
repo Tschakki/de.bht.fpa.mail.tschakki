@@ -16,6 +16,12 @@ public class MessageStakeholder {
         this.mailAddress = new SimpleStringProperty();
     }
 
+    public MessageStakeholder(String name, String mailaddi) {
+        this.name = new SimpleStringProperty(name);
+        this.mailAddress = new SimpleStringProperty(mailaddi);
+    }
+
+
     public String getName() {
         return name.get();
     }

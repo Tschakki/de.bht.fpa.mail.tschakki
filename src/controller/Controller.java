@@ -6,7 +6,9 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import java.net.URL;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.ResourceBundle;
 import javafx.fxml.Initializable;
 import javafx.scene.control.MenuItem;
@@ -15,8 +17,11 @@ import javafx.scene.control.TableView;
 import mail.Main;
 import model.Message;
 import model.MessageImportance;
+import model.MessageStakeholder;
 
 import java.awt.*;
+
+import static java.time.LocalDate.*;
 
 public class Controller  implements Initializable {
 
@@ -62,9 +67,9 @@ public class Controller  implements Initializable {
     private void initialize() {
         // Initialize the person table with the two columns.
         //importanceOfMessageColumn.setCellValueFactory(cellData -> cellData.getValue().importanceOfMessageProperty());
-        //receivedAtColumn.setCellValueFactory(cellData -> cellData.getValue().receivedAtProperty());
+        receivedAtColumn.setCellValueFactory(cellData -> cellData.getValue().receivedAtProperty());
         readStatusColumn.setCellValueFactory(cellData -> cellData.getValue().readStatusProperty().asObject());
-        //senderColumn.setCellValueFactory(cellData -> cellData.getValue().senderProperty().get().nameProperty());
+        senderColumn.setCellValueFactory(cellData -> cellData.getValue().senderProperty().get().nameProperty());
         subjectColumn.setCellValueFactory(cellData -> cellData.getValue().subjectProperty());
         generateMessages();
         System.out.println(messageData.toString());
@@ -75,14 +80,15 @@ public class Controller  implements Initializable {
     private void generateMessages(){
         Message nachricht = new Message();
         nachricht.setSubject("Betreff der Nachricht");
-        //nachricht. setSender("flying@cat.org");
+        nachricht.setSender(new MessageStakeholder("Catz", "flying@cat.org"));
+        //nachricht.setImportanceOfMessage(new MessageImportance("low"));
+        nachricht.setReceivedAt(LocalDateTime.now());
         messageData.add(nachricht);
         messageData.add(nachricht);
         messageData.add(nachricht);
         messageData.add(nachricht);
         messageData.add(nachricht);
         messageData.add(nachricht);
-
     }
 
     public ObservableList<Message> getMessageData() {
