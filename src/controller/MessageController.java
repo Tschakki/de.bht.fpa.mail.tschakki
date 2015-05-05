@@ -3,6 +3,7 @@ package controller;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import model.Message;
@@ -10,12 +11,14 @@ import model.MessageImportance;
 import model.MessageStakeholder;
 
 import java.io.Serializable;
+import java.net.URL;
 import java.time.LocalDateTime;
+import java.util.ResourceBundle;
 
 /**
  * Created by tschakki on 04.05.15.
  */
-public class MessageController implements Serializable{
+public class MessageController implements Initializable{
 
     private ObservableList<Message> messageData = FXCollections.observableArrayList();
 
@@ -37,7 +40,7 @@ public class MessageController implements Serializable{
     private TableColumn<Message, String> recipientsColumn;
 
     @FXML
-    private void initialize() {
+    public void initialize(URL url, ResourceBundle rb) {
         // Initialize the person table with the two columns.
         //importanceOfMessageColumn.setCellValueFactory(cellData -> cellData.getValue().importanceOfMessageProperty());
         receivedAtColumn.setCellValueFactory(cellData -> cellData.getValue().receivedAtProperty());
