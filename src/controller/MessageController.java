@@ -4,8 +4,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import model.Message;
 import model.MessageImportance;
 import model.MessageStakeholder;
@@ -39,25 +43,41 @@ public class MessageController implements Initializable{
     @FXML
     private TableColumn<Message, String> recipientsColumn;
 
+    private final Node importanceIcon = new ImageView(
+            new Image(getClass().getResourceAsStream("../cat32.png"))
+    );
     @FXML
     public void initialize(URL url, ResourceBundle rb) {
         // Initialize the person table with the two columns.
-        //importanceOfMessageColumn.setCellValueFactory(cellData -> cellData.getValue().importanceOfMessageProperty());
+        importanceOfMessageColumn.setCellValueFactory(cellData -> cellData.getValue().importanceOfMessageProperty());
+        importanceOfMessageColumn.setCellFactory(cellData -> new TableCell<Message, MessageImportance>(){
+            @Override
+            protected void updateItem(MessageImportance item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (item != null) {
+                    setGraphic(new ImageView(
+                            new Image(getClass().getResourceAsStream("../cat32.png"))
+                    ));
+                }
+            }
+        });
         receivedAtColumn.setCellValueFactory(cellData -> cellData.getValue().receivedAtProperty());
         readStatusColumn.setCellValueFactory(cellData -> cellData.getValue().readStatusProperty().asObject());
         senderColumn.setCellValueFactory(cellData -> cellData.getValue().senderProperty().get().nameProperty());
         subjectColumn.setCellValueFactory(cellData -> cellData.getValue().subjectProperty());
         generateMessages();
-        System.out.println(messageData.toString());
-        System.out.println("test");
+        System.out.println("initialize messagetable");
         messageTable.setItems(messageData);
     }
+
+
 
     private void generateMessages(){
         Message nachricht = new Message();
         nachricht.setSubject("Betreff der Nachricht");
         nachricht.setSender(new MessageStakeholder("Catz", "flying@cat.org"));
-        //nachricht.setImportanceOfMessage(new MessageImportance("low"));
+        nachricht.setImportanceOfMessage(MessageImportance.HIGH);
         nachricht.setReceivedAt(LocalDateTime.now());
         messageData.add(nachricht);
         messageData.add(nachricht);

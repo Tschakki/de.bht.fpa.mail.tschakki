@@ -24,20 +24,28 @@ public class FolderController implements Initializable {
     @FXML
     private TreeView<String> dateiBaum;
 
-    private final Node folderIcon = new ImageView(
+    /*private final Node folderIcon = new ImageView(
             new Image(getClass().getResourceAsStream("../cat16.png"))
-    );
+    );*/
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        TreeItem<String> root = new TreeItem<>("Folder");
-        root.setGraphic(folderIcon);
+        TreeItem<String> treeRoot = new TreeItem<>("Folder");
+        treeRoot.setGraphic(new ImageView(
+                new Image(getClass().getResourceAsStream("../cat16.png"))
+        ));
         for(int i = 1; i < 6; ++i) {
-            TreeItem<String> subFolder = new TreeItem<>("Subfolder " + i);
-            root.getChildren().add(subFolder);
-            subFolder.setGraphic(folderIcon);
+           // TreeItem<String> subFolder = new TreeItem<>("Subfolder " + i);
+            treeRoot.getChildren().add(new TreeItem<String>("Subfolder " + i));
+
         }
-        root.setExpanded(true);
-        dateiBaum.setRoot(root);
+
+        for (int i=0; i<5; i++) {
+            treeRoot.getChildren().get(i).setGraphic(new ImageView(
+                    new Image(getClass().getResourceAsStream("../cat16.png"))
+            ));
+        }
+        treeRoot.setExpanded(true);
+        dateiBaum.setRoot(treeRoot);
     }
 }
