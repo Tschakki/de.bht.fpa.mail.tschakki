@@ -18,7 +18,8 @@ public class Message {
     private ObjectProperty<MessageStakeholder> sender;
     private StringProperty subject;
     private StringProperty text;
-    private List<MessageStakeholder> recipients;
+    //private List<MessageStakeholder> recipients;
+    private ObjectProperty<MessageStakeholder> recipients;
 
     public Message() {
         this.importanceOfMessage = new SimpleObjectProperty<>();
@@ -27,7 +28,8 @@ public class Message {
         this.receivedAt = new SimpleObjectProperty<>();
         this.sender = new SimpleObjectProperty<>();
         this.text = new SimpleStringProperty();
-        this.recipients = new ArrayList<>();
+        //this.recipients = new ArrayList<>();
+        this.recipients = new SimpleObjectProperty();
     }
 
     public void setId(String id) {
@@ -110,11 +112,20 @@ public class Message {
         return this.text.get();
     }
 
-    public List<MessageStakeholder> getRecipients() {
+    /*public List<MessageStakeholder> getRecipients() {
         return recipients;
     }
 
     public void setRecipients(List<MessageStakeholder> recipients) {
         this.recipients = recipients;
+    }*/
+
+    public void setRecipients(MessageStakeholder messageStakeholder) {
+        recipients.set(messageStakeholder);
     }
+
+    public MessageStakeholder getRecipients() {
+        return recipients.get();
+    }
+
 }

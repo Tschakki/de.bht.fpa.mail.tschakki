@@ -32,7 +32,7 @@ public class FolderController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         TreeItem<String> treeRoot = new TreeItem<>("Folder");
         treeRoot.setGraphic(new ImageView(
-                new Image(getClass().getResourceAsStream("../cat16.png"))
+                new Image(getClass().getResourceAsStream("../ordner.png"))
         ));
         for(int i = 1; i < 6; ++i) {
            // TreeItem<String> subFolder = new TreeItem<>("Subfolder " + i);
@@ -42,7 +42,7 @@ public class FolderController implements Initializable {
 
         for (int i=0; i<5; i++) {
             treeRoot.getChildren().get(i).setGraphic(new ImageView(
-                    new Image(getClass().getResourceAsStream("../cat16.png"))
+                    new Image(getClass().getResourceAsStream("../ordner.png"))
             ));
         }
         treeRoot.setExpanded(true);

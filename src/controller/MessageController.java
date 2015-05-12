@@ -108,10 +108,12 @@ public class MessageController implements Initializable {
         nachricht.setImportanceOfMessage(MessageImportance.HIGH);
         nachricht.setReceivedAt(LocalDateTime.now());
         nachricht.setText("Hallo sagt die Catz!");
+        nachricht.setRecipients(new MessageStakeholder("Tschakki", "tschakki@mehli.org"));
         Message nachricht2 = new Message();
         nachricht2.setSubject("zweiter Betreff der Nachricht");
         nachricht2.setSender(new MessageStakeholder("Mehli", "mehli@entogrow.org"));
         nachricht2.setImportanceOfMessage(MessageImportance.NORMAL);
+        nachricht2.setRecipients(new MessageStakeholder("Tschakki", "tschakki@mehli.org"));
         nachricht2.setReceivedAt(LocalDateTime.now());
         nachricht2.setText("Viele Grüße von Mehli");
         messageData.add(nachricht);
@@ -135,8 +137,8 @@ public class MessageController implements Initializable {
     private void showMessageDetails(Message message) {
         if (message != null) {
             // Fill the labels with info from the person object.
-            fromLabel.setText(String.valueOf(message.getSender()));
-            recipientsLabel.setText(String.valueOf(message.getRecipients()));
+            fromLabel.setText(String.valueOf(message.getSender().getMailAddress()));
+            recipientsLabel.setText(String.valueOf(message.getRecipients().getMailAddress()));
             dateLabel.setText(String.valueOf(message.getReceivedAt()));
             subjectLabel.setText(message.getSubject());
             textArea.setText(message.getText());
