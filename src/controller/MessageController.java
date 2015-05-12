@@ -18,6 +18,7 @@ import javafx.scene.control.TextArea;
 
 import java.io.Serializable;
 import java.net.URL;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
@@ -33,6 +34,7 @@ public class MessageController implements Initializable {
     @FXML
     private TableColumn<Message, MessageImportance> importanceOfMessageColumn;
     @FXML
+    //private TableColumn<Message, LocalDateTime> receivedAtColumn;
     private TableColumn<Message, LocalDateTime> receivedAtColumn;
     @FXML
     private TableColumn<Message, Boolean> readStatusColumn;
@@ -82,7 +84,26 @@ public class MessageController implements Initializable {
                 }
             }
         });
+        //receivedAtColumn.setCellValueFactory(cellData -> cellData.getValue().receivedAtProperty());
         receivedAtColumn.setCellValueFactory(cellData -> cellData.getValue().receivedAtProperty());
+        readStatusColumn.setCellFactory(cellData -> new TableCell<Message, Boolean>(){
+            protected void updateItem(Boolean item, boolean empty) {
+                super.updateItem(item, empty);
+                if (item!=null){
+                    if (!item) {
+                        setGraphic(new ImageView(
+                                new Image(getClass().getResourceAsStream("../readFalse.png"))
+                        ));
+                    }
+                    else {
+                        setGraphic(new ImageView(
+                                new Image(getClass().getResourceAsStream("../readTrue.png"))
+                        ));
+                    }
+                }
+
+        }
+        });
         readStatusColumn.setCellValueFactory(cellData -> cellData.getValue().readStatusProperty().asObject());
         senderColumn.setCellValueFactory(cellData -> cellData.getValue().senderProperty().get().nameProperty());
         subjectColumn.setCellValueFactory(cellData -> cellData.getValue().subjectProperty());
@@ -116,6 +137,7 @@ public class MessageController implements Initializable {
         nachricht2.setRecipients(new MessageStakeholder("Tschakki", "tschakki@mehli.org"));
         nachricht2.setReceivedAt(LocalDateTime.now());
         nachricht2.setText("Viele Grüße von Mehli");
+        nachricht2.setReadStatus(true);
         messageData.add(nachricht);
         messageData.add(nachricht2);
         messageData.add(nachricht);
@@ -139,11 +161,10 @@ public class MessageController implements Initializable {
             // Fill the labels with info from the person object.
             fromLabel.setText(String.valueOf(message.getSender().getMailAddress()));
             recipientsLabel.setText(String.valueOf(message.getRecipients().getMailAddress()));
-            dateLabel.setText(String.valueOf(message.getReceivedAt()));
+            dateLabel.setText(String.valueOf(DateUtil.format(message.getReceivedAt())));
             subjectLabel.setText(message.getSubject());
             textArea.setText(message.getText());
 
-            // TODO: We need a way to convert the birthday into a String!
             // birthdayLabel.setText(...);
         } else {
             // Person is null, remove all the text.
