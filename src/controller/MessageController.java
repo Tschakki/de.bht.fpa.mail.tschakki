@@ -20,6 +20,7 @@ import java.io.Serializable;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.LinkedList;
 import java.util.ResourceBundle;
 
 /**
@@ -123,18 +124,24 @@ public class MessageController implements Initializable {
 
 
     private void generateMessages() {
+        int index = 0;
+        MessageStakeholder stakeHolder = new MessageStakeholder("Tschakki", "tschakki@mehli.org");
+        LinkedList<MessageStakeholder> absenderListe = new LinkedList<MessageStakeholder>();
+        absenderListe.add(index, stakeHolder);
         Message nachricht = new Message();
         nachricht.setSubject("Betreff der Nachricht");
         nachricht.setSender(new MessageStakeholder("Catz", "flying@cat.org"));
         nachricht.setImportanceOfMessage(MessageImportance.HIGH);
         nachricht.setReceivedAt(LocalDateTime.now());
         nachricht.setText("Hallo sagt die Catz!");
-        nachricht.setRecipients(new MessageStakeholder("Tschakki", "tschakki@mehli.org"));
+        //nachricht.setRecipients(new MessageStakeholder("Tschakki", "tschakki@mehli.org"));
+        nachricht.setRecipients(absenderListe);
         Message nachricht2 = new Message();
         nachricht2.setSubject("zweiter Betreff der Nachricht");
         nachricht2.setSender(new MessageStakeholder("Mehli", "mehli@entogrow.org"));
         nachricht2.setImportanceOfMessage(MessageImportance.NORMAL);
-        nachricht2.setRecipients(new MessageStakeholder("Tschakki", "tschakki@mehli.org"));
+        //nachricht2.setRecipients(new MessageStakeholder("Tschakki", "tschakki@mehli.org"));
+        nachricht2.setRecipients(absenderListe);
         nachricht2.setReceivedAt(LocalDateTime.now());
         nachricht2.setText("Viele Grüße von Mehli");
         nachricht2.setReadStatus(true);
@@ -160,7 +167,7 @@ public class MessageController implements Initializable {
         if (message != null) {
             // Fill the labels with info from the person object.
             fromLabel.setText(String.valueOf(message.getSender().getMailAddress()));
-            recipientsLabel.setText(String.valueOf(message.getRecipients().getMailAddress()));
+            recipientsLabel.setText(String.valueOf(message.getRecipients().get(0).getMailAddress()));
             dateLabel.setText(String.valueOf(DateUtil.format(message.getReceivedAt())));
             subjectLabel.setText(message.getSubject());
             textArea.setText(message.getText());
