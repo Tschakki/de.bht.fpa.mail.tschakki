@@ -16,6 +16,10 @@ import model.MessageStakeholder;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+import java.io.File;
 import java.io.Serializable;
 import java.net.URL;
 import java.time.LocalDate;
@@ -87,28 +91,28 @@ public class MessageController implements Initializable {
         });
         //receivedAtColumn.setCellValueFactory(cellData -> cellData.getValue().receivedAtProperty());
         receivedAtColumn.setCellValueFactory(cellData -> cellData.getValue().receivedAtProperty());
-        readStatusColumn.setCellFactory(cellData -> new TableCell<Message, Boolean>(){
+        readStatusColumn.setCellFactory(cellData -> new TableCell<Message, Boolean>() {
             protected void updateItem(Boolean item, boolean empty) {
                 super.updateItem(item, empty);
-                if (item!=null){
+                if (item != null) {
                     if (!item) {
                         setGraphic(new ImageView(
                                 new Image(getClass().getResourceAsStream("../readFalse.png"))
                         ));
-                    }
-                    else {
+                    } else {
                         setGraphic(new ImageView(
                                 new Image(getClass().getResourceAsStream("../readTrue.png"))
                         ));
                     }
                 }
 
-        }
+            }
         });
         readStatusColumn.setCellValueFactory(cellData -> cellData.getValue().readStatusProperty().asObject());
         senderColumn.setCellValueFactory(cellData -> cellData.getValue().senderProperty().get().nameProperty());
         subjectColumn.setCellValueFactory(cellData -> cellData.getValue().subjectProperty());
-        generateMessages();
+        //generateMessages();
+        createExampleMessages();
         System.out.println("initialize messagetable");
         messageTable.setItems(messageData);
 
@@ -121,6 +125,33 @@ public class MessageController implements Initializable {
 
     }
 
+    /**
+     * Returns all .xml files from the given path as an Array filled with files.
+     *
+     * @return File[]
+     */
+    public File[] loadFiles() {
+        final String extension = ".xml";
+        final File currentDir = new File("../mes/");
+        return currentDir.listFiles((File pathname) -> pathname.getName().endsWith(extension));
+    }
+
+    /**
+     * This method creates Message objects out of XML-files.
+     */
+    public void createExampleMessages() {
+        File[] files = loadFiles();
+        for (File file : files) {
+            try {
+                JAXBContext jaxbContext = JAXBContext.newInstance(Message.class);
+                Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+                Message msg = (Message) jaxbUnmarshaller.unmarshal(file);
+                messageData.add(msg);
+            } catch (JAXBException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
 
     private void generateMessages() {
