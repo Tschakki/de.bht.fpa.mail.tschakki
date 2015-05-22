@@ -2,6 +2,10 @@ package model;
 
 import javafx.beans.property.*;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +13,7 @@ import java.util.List;
 /**
  * Created by Benjamin Haupt on 26.03.15.
  */
+@XmlRootElement
 public class Message {
 
     private String id;
@@ -60,6 +65,7 @@ public class Message {
         this.receivedAt.set(receivedAt);
     }
 
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
     public LocalDateTime getReceivedAt() {
         return this.receivedAt.get();
     }
@@ -112,6 +118,8 @@ public class Message {
         return this.text.get();
     }
 
+    @XmlElementWrapper (name="recipients")
+    @XmlElement(name = "recipient")
     public List<MessageStakeholder> getRecipients() {
         return recipients;
     }

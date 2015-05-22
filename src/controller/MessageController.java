@@ -5,23 +5,27 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import model.Message;
 import model.MessageImportance;
+import model.MessageListWrapper;
 import model.MessageStakeholder;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+import java.io.File;
 import java.io.Serializable;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.prefs.Preferences;
 
 /**
  * Created by tschakki on 04.05.15.
@@ -58,6 +62,8 @@ public class MessageController implements Initializable {
             new Image(getClass().getResourceAsStream("../cat32.png"))
     );*/
 
+
+
     @FXML
     public void initialize(URL url, ResourceBundle rb) {
         // Initialize the person table with the two columns.
@@ -87,28 +93,36 @@ public class MessageController implements Initializable {
         });
         //receivedAtColumn.setCellValueFactory(cellData -> cellData.getValue().receivedAtProperty());
         receivedAtColumn.setCellValueFactory(cellData -> cellData.getValue().receivedAtProperty());
-        readStatusColumn.setCellFactory(cellData -> new TableCell<Message, Boolean>(){
+        readStatusColumn.setCellFactory(cellData -> new TableCell<Message, Boolean>() {
             protected void updateItem(Boolean item, boolean empty) {
                 super.updateItem(item, empty);
-                if (item!=null){
+                if (item != null) {
                     if (!item) {
                         setGraphic(new ImageView(
                                 new Image(getClass().getResourceAsStream("../readFalse.png"))
                         ));
-                    }
-                    else {
+                    } else {
                         setGraphic(new ImageView(
                                 new Image(getClass().getResourceAsStream("../readTrue.png"))
                         ));
                     }
                 }
 
-        }
+            }
         });
+
+
         readStatusColumn.setCellValueFactory(cellData -> cellData.getValue().readStatusProperty().asObject());
         senderColumn.setCellValueFactory(cellData -> cellData.getValue().senderProperty().get().nameProperty());
         subjectColumn.setCellValueFactory(cellData -> cellData.getValue().subjectProperty());
-        generateMessages();
+        //generateMessages();
+        //final File testMessage = new File("/home/tschakki/IdeaProjects/de.bht.fpa.mail.tschakki/src/xml-messages/1428077534069.xml");
+        //loadMessageDataFromFile(testMessage);
+        fillTable("src/xml-messages");
+
+
+
+        createExampleMessages();
         System.out.println("initialize messagetable");
         messageTable.setItems(messageData);
 
@@ -182,4 +196,116 @@ public class MessageController implements Initializable {
             textArea.setText("");
         }
     }
+
+    /**
+     * Opens the xml file, reads all the information and returns a new message
+     * object.
+     *
+     * @param file The passed xml file
+     * @return The resulting Message object
+     */
+    private Message readMessage(File file) {
+        try {
+            JAXBContext jc = JAXBContext.newInstance(Message.class);
+            Unmarshaller um = jc.createUnmarshaller();
+            System.out.println(um.unmarshal(file));
+            return (Message) um.unmarshal(file);
+        } catch (JAXBException ex) {
+            Logger.getLogger(MessageController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    /**
+     * Fills the table by the xml files within the passed path.
+     *
+     * @param path the path containing the xml files.
+     */
+    private void fillTable(String path) {
+        File file = new File(path);
+        for (File each : file.listFiles()) {
+            System.out.println(each);
+            messageData.add(readMessage(each));
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /**
+     * Returns all .xml files from the given path as an Array filled with files.
+     *
+     * @return File[]
+     */
+    public File[] loadFiles() {
+        final String extension = ".xml";
+        final File currentDir = new File("/home/tschakki/IdeaProjects/de.bht.fpa.mail.tschakki/src/xml-messages/");
+        return currentDir.listFiles((File pathname) -> pathname.getName().endsWith(extension));
+    }
+
+    /**
+     * This method creates Message objects out of XML-files.
+     */
+    public void createExampleMessages() {
+        File[] files = loadFiles();
+        for (File file : files) {
+            try {
+                JAXBContext jaxbContext = JAXBContext.newInstance(Message.class);
+                Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+                Message msg = (Message) jaxbUnmarshaller.unmarshal(file);
+                messageData.add(msg);
+            } catch (JAXBException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void loadMessageDataFromFile(File file) {
+        try {
+            JAXBContext context = JAXBContext
+                    .newInstance(MessageListWrapper.class);
+            Unmarshaller um = context.createUnmarshaller();
+
+            // Reading XML from the file and unmarshalling.
+            MessageListWrapper wrapper = (MessageListWrapper) um.unmarshal(file);
+
+            messageData.clear();
+            messageData.addAll(wrapper.getMessages());
+
+            // Save the file path to the registry.
+            //setMessageFilePath(file);
+
+        } catch (Exception e) { // catches ANY exception
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Could not load data");
+            alert.setContentText("Could not load data from file:\n" + file.getPath());
+
+            alert.showAndWait();
+        }
+    }
+
+
+
 }
