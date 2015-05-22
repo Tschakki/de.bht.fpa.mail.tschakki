@@ -111,61 +111,20 @@ public class MessageController implements Initializable {
             }
         });
 
-
         readStatusColumn.setCellValueFactory(cellData -> cellData.getValue().readStatusProperty().asObject());
         senderColumn.setCellValueFactory(cellData -> cellData.getValue().senderProperty().get().nameProperty());
         subjectColumn.setCellValueFactory(cellData -> cellData.getValue().subjectProperty());
         //generateMessages();
-        //final File testMessage = new File("/home/tschakki/IdeaProjects/de.bht.fpa.mail.tschakki/src/xml-messages/1428077534069.xml");
-        //loadMessageDataFromFile(testMessage);
         fillTable("src/xml-messages");
-
-
-
-        createExampleMessages();
         System.out.println("initialize messagetable");
-        messageTable.setItems(messageData);
-
         // Clear person details.
         showMessageDetails(null);
-
         // Listen for selection changes and show the person details when changed.
         messageTable.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> showMessageDetails(newValue));
 
     }
 
-
-
-    private void generateMessages() {
-        int index = 0;
-        MessageStakeholder stakeHolder = new MessageStakeholder("Tschakki", "tschakki@mehli.org");
-        LinkedList<MessageStakeholder> absenderListe = new LinkedList<MessageStakeholder>();
-        absenderListe.add(index, stakeHolder);
-        Message nachricht = new Message();
-        nachricht.setSubject("Betreff der Nachricht");
-        nachricht.setSender(new MessageStakeholder("Catz", "flying@cat.org"));
-        nachricht.setImportanceOfMessage(MessageImportance.HIGH);
-        nachricht.setReceivedAt(LocalDateTime.now());
-        nachricht.setText("Hallo sagt die Catz!");
-        //nachricht.setRecipients(new MessageStakeholder("Tschakki", "tschakki@mehli.org"));
-        nachricht.setRecipients(absenderListe);
-        Message nachricht2 = new Message();
-        nachricht2.setSubject("zweiter Betreff der Nachricht");
-        nachricht2.setSender(new MessageStakeholder("Mehli", "mehli@entogrow.org"));
-        nachricht2.setImportanceOfMessage(MessageImportance.NORMAL);
-        //nachricht2.setRecipients(new MessageStakeholder("Tschakki", "tschakki@mehli.org"));
-        nachricht2.setRecipients(absenderListe);
-        nachricht2.setReceivedAt(LocalDateTime.now());
-        nachricht2.setText("Viele Grüße von Mehli");
-        nachricht2.setReadStatus(true);
-        messageData.add(nachricht);
-        messageData.add(nachricht2);
-        messageData.add(nachricht);
-        messageData.add(nachricht2);
-        messageData.add(nachricht);
-        messageData.add(nachricht2);
-    }
 
     public ObservableList<Message> getMessageData() {
         return messageData;
@@ -208,7 +167,6 @@ public class MessageController implements Initializable {
         try {
             JAXBContext jc = JAXBContext.newInstance(Message.class);
             Unmarshaller um = jc.createUnmarshaller();
-            System.out.println(um.unmarshal(file));
             return (Message) um.unmarshal(file);
         } catch (JAXBException ex) {
             Logger.getLogger(MessageController.class.getName()).log(Level.SEVERE, null, ex);
@@ -224,9 +182,9 @@ public class MessageController implements Initializable {
     private void fillTable(String path) {
         File file = new File(path);
         for (File each : file.listFiles()) {
-            System.out.println(each);
             messageData.add(readMessage(each));
         }
+        messageTable.setItems(messageData);
     }
 
 
@@ -240,72 +198,33 @@ public class MessageController implements Initializable {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-    /**
-     * Returns all .xml files from the given path as an Array filled with files.
-     *
-     * @return File[]
-     */
-    public File[] loadFiles() {
-        final String extension = ".xml";
-        final File currentDir = new File("/home/tschakki/IdeaProjects/de.bht.fpa.mail.tschakki/src/xml-messages/");
-        return currentDir.listFiles((File pathname) -> pathname.getName().endsWith(extension));
+    private void generateMessages() {
+        int index = 0;
+        MessageStakeholder stakeHolder = new MessageStakeholder("Tschakki", "tschakki@mehli.org");
+        LinkedList<MessageStakeholder> absenderListe = new LinkedList<MessageStakeholder>();
+        absenderListe.add(index, stakeHolder);
+        Message nachricht = new Message();
+        nachricht.setSubject("Betreff der Nachricht");
+        nachricht.setSender(new MessageStakeholder("Catz", "flying@cat.org"));
+        nachricht.setImportanceOfMessage(MessageImportance.HIGH);
+        nachricht.setReceivedAt(LocalDateTime.now());
+        nachricht.setText("Hallo sagt die Catz!");
+        //nachricht.setRecipients(new MessageStakeholder("Tschakki", "tschakki@mehli.org"));
+        nachricht.setRecipients(absenderListe);
+        Message nachricht2 = new Message();
+        nachricht2.setSubject("zweiter Betreff der Nachricht");
+        nachricht2.setSender(new MessageStakeholder("Mehli", "mehli@entogrow.org"));
+        nachricht2.setImportanceOfMessage(MessageImportance.NORMAL);
+        //nachricht2.setRecipients(new MessageStakeholder("Tschakki", "tschakki@mehli.org"));
+        nachricht2.setRecipients(absenderListe);
+        nachricht2.setReceivedAt(LocalDateTime.now());
+        nachricht2.setText("Viele Grüße von Mehli");
+        nachricht2.setReadStatus(true);
+        messageData.add(nachricht);
+        messageData.add(nachricht2);
+        messageData.add(nachricht);
+        messageData.add(nachricht2);
+        messageData.add(nachricht);
+        messageData.add(nachricht2);
     }
-
-    /**
-     * This method creates Message objects out of XML-files.
-     */
-    public void createExampleMessages() {
-        File[] files = loadFiles();
-        for (File file : files) {
-            try {
-                JAXBContext jaxbContext = JAXBContext.newInstance(Message.class);
-                Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-                Message msg = (Message) jaxbUnmarshaller.unmarshal(file);
-                messageData.add(msg);
-            } catch (JAXBException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public void loadMessageDataFromFile(File file) {
-        try {
-            JAXBContext context = JAXBContext
-                    .newInstance(MessageListWrapper.class);
-            Unmarshaller um = context.createUnmarshaller();
-
-            // Reading XML from the file and unmarshalling.
-            MessageListWrapper wrapper = (MessageListWrapper) um.unmarshal(file);
-
-            messageData.clear();
-            messageData.addAll(wrapper.getMessages());
-
-            // Save the file path to the registry.
-            //setMessageFilePath(file);
-
-        } catch (Exception e) { // catches ANY exception
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("Could not load data");
-            alert.setContentText("Could not load data from file:\n" + file.getPath());
-
-            alert.showAndWait();
-        }
-    }
-
-
-
 }
