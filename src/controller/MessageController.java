@@ -5,16 +5,13 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import model.Message;
 import model.MessageImportance;
+import model.MessageListWrapper;
 import model.MessageStakeholder;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -26,6 +23,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.prefs.Preferences;
 
 /**
  * Created by tschakki on 04.05.15.
@@ -61,6 +61,8 @@ public class MessageController implements Initializable {
     /*private final Node importanceIcon = new ImageView(
             new Image(getClass().getResourceAsStream("../cat32.png"))
     );*/
+
+
 
     @FXML
     public void initialize(URL url, ResourceBundle rb) {
@@ -108,17 +110,15 @@ public class MessageController implements Initializable {
 
             }
         });
+
         readStatusColumn.setCellValueFactory(cellData -> cellData.getValue().readStatusProperty().asObject());
         senderColumn.setCellValueFactory(cellData -> cellData.getValue().senderProperty().get().nameProperty());
         subjectColumn.setCellValueFactory(cellData -> cellData.getValue().subjectProperty());
         //generateMessages();
-
+        fillTable("src/xml-messages");
         System.out.println("initialize messagetable");
-        messageTable.setItems(messageData);
-
         // Clear person details.
         showMessageDetails(null);
-
         // Listen for selection changes and show the person details when changed.
         messageTable.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> showMessageDetails(newValue));
@@ -153,6 +153,77 @@ public class MessageController implements Initializable {
         }
     }
 
+    public ObservableList<Message> getMessageData() {
+        return messageData;
+    }
+
+    /**
+     * Fills all text fields to show details about the person.
+     * If the specified person is null, all text fields are cleared.
+     *
+     * @param message the person or null
+     */
+    private void showMessageDetails(Message message) {
+        if (message != null) {
+            // Fill the labels with info from the person object.
+            fromLabel.setText(String.valueOf(message.getSender().getMailAddress()));
+            recipientsLabel.setText(String.valueOf(message.getRecipients().get(0).getMailAddress()));
+            dateLabel.setText(String.valueOf(DateUtil.format(message.getReceivedAt())));
+            subjectLabel.setText(message.getSubject());
+            textArea.setText(message.getText());
+
+            // birthdayLabel.setText(...);
+        } else {
+            // Person is null, remove all the text.
+            fromLabel.setText("");
+            recipientsLabel.setText("");
+            dateLabel.setText("");
+            subjectLabel.setText("");
+            textArea.setText("");
+        }
+    }
+
+    /**
+     * Opens the xml file, reads all the information and returns a new message
+     * object.
+     *
+     * @param file The passed xml file
+     * @return The resulting Message object
+     */
+    private Message readMessage(File file) {
+        try {
+            JAXBContext jc = JAXBContext.newInstance(Message.class);
+            Unmarshaller um = jc.createUnmarshaller();
+            return (Message) um.unmarshal(file);
+        } catch (JAXBException ex) {
+            Logger.getLogger(MessageController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    /**
+     * Fills the table by the xml files within the passed path.
+     *
+     * @param path the path containing the xml files.
+     */
+    private void fillTable(String path) {
+        File file = new File(path);
+        for (File each : file.listFiles()) {
+            messageData.add(readMessage(each));
+        }
+        messageTable.setItems(messageData);
+    }
+
+
+
+
+
+
+
+
+
+
+
 
     private void generateMessages() {
         int index = 0;
@@ -182,35 +253,5 @@ public class MessageController implements Initializable {
         messageData.add(nachricht2);
         messageData.add(nachricht);
         messageData.add(nachricht2);
-    }
-
-    public ObservableList<Message> getMessageData() {
-        return messageData;
-    }
-
-    /**
-     * Fills all text fields to show details about the person.
-     * If the specified person is null, all text fields are cleared.
-     *
-     * @param message the person or null
-     */
-    private void showMessageDetails(Message message) {
-        if (message != null) {
-            // Fill the labels with info from the person object.
-            fromLabel.setText(String.valueOf(message.getSender().getMailAddress()));
-            recipientsLabel.setText(String.valueOf(message.getRecipients().get(0).getMailAddress()));
-            dateLabel.setText(String.valueOf(DateUtil.format(message.getReceivedAt())));
-            subjectLabel.setText(message.getSubject());
-            textArea.setText(message.getText());
-
-            // birthdayLabel.setText(...);
-        } else {
-            // Person is null, remove all the text.
-            fromLabel.setText("");
-            recipientsLabel.setText("");
-            dateLabel.setText("");
-            subjectLabel.setText("");
-            textArea.setText("");
-        }
     }
 }

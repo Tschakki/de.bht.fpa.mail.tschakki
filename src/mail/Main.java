@@ -13,7 +13,11 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import model.Message;
+import model.MessageListWrapper;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Unmarshaller;
+import java.io.File;
 import java.io.IOException;
 
 
@@ -33,6 +37,7 @@ public class Main extends Application {
         root.setCenter(contentWindow);
         primaryStage.show();
     }
+
 
 
 
