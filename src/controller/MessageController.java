@@ -112,7 +112,7 @@ public class MessageController implements Initializable {
         senderColumn.setCellValueFactory(cellData -> cellData.getValue().senderProperty().get().nameProperty());
         subjectColumn.setCellValueFactory(cellData -> cellData.getValue().subjectProperty());
         //generateMessages();
-        createExampleMessages();
+
         System.out.println("initialize messagetable");
         messageTable.setItems(messageData);
 
