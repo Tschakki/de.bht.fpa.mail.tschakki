@@ -66,7 +66,19 @@ public class MessageController implements Initializable {
 
     @FXML
     public void initialize(URL url, ResourceBundle rb) {
-        // Initialize the person table with the two columns.
+        connectTableCells();
+        //generateMessages();
+        fillTable("src/xml-messages");
+        System.out.println("initialize messagetable");
+        // Clear person details.
+        showMessageDetails(null);
+        // Listen for selection changes and show the person details when changed.
+        messageTable.getSelectionModel().selectedItemProperty().addListener(
+                (observable, oldValue, newValue) -> showMessageDetails(newValue));
+
+    }
+
+    private void connectTableCells(){
         importanceOfMessageColumn.setCellValueFactory(cellData -> cellData.getValue().importanceOfMessageProperty());
         importanceOfMessageColumn.setCellFactory(cellData -> new TableCell<Message, MessageImportance>() {
             @Override
@@ -114,15 +126,6 @@ public class MessageController implements Initializable {
         readStatusColumn.setCellValueFactory(cellData -> cellData.getValue().readStatusProperty().asObject());
         senderColumn.setCellValueFactory(cellData -> cellData.getValue().senderProperty().get().nameProperty());
         subjectColumn.setCellValueFactory(cellData -> cellData.getValue().subjectProperty());
-        //generateMessages();
-        fillTable("src/xml-messages");
-        System.out.println("initialize messagetable");
-        // Clear person details.
-        showMessageDetails(null);
-        // Listen for selection changes and show the person details when changed.
-        messageTable.getSelectionModel().selectedItemProperty().addListener(
-                (observable, oldValue, newValue) -> showMessageDetails(newValue));
-
     }
 
     /**
@@ -165,6 +168,7 @@ public class MessageController implements Initializable {
      */
     private void showMessageDetails(Message message) {
         if (message != null) {
+            setMessageAsRead(message);
             // Fill the labels with info from the person object.
             fromLabel.setText(String.valueOf(message.getSender().getMailAddress()));
             recipientsLabel.setText(String.valueOf(message.getRecipients().get(0).getMailAddress()));
@@ -212,6 +216,10 @@ public class MessageController implements Initializable {
             messageData.add(readMessage(each));
         }
         messageTable.setItems(messageData);
+    }
+
+    private void setMessageAsRead(Message message){
+        message.setReadStatus(true);
     }
 
 
