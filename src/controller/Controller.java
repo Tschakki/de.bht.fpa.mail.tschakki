@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.ResourceBundle;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -35,6 +36,39 @@ public class Controller  implements Initializable {
         private MenuItem filterSetFilter;
 
 
+    @FXML
+    public void onClickExit(){
+        System.out.println("Exit application");
+        System.exit(0);
+    }
+
+    @FXML
+    public void onClickSetBasePath(){
+        System.out.println("Set Base Path...");
+    }
+
+    @FXML
+    public void onClickSetFilter(){
+        System.out.println("Set Filter...");
+    }
+
+    @FXML
+    public void onClickAbout(){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Über Mehli-MailClient");
+        alert.setHeaderText(null);
+        alert.setContentText("Mehli bringt dir die Mails gemächlich");
+
+        alert.showAndWait();
+    }
+
+    @FXML
+    public void initialize(URL url, ResourceBundle rb) {
+
+
+    }
+
+
 
     /**
      * The constructor.
@@ -53,7 +87,7 @@ public class Controller  implements Initializable {
      //   System.out.println("Exit");
     //}
 
-    public void initialize(URL location, ResourceBundle resources) {
+    /*public void initialize(URL location, ResourceBundle resources) {
         System.out.println("test");
         fileExit.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -80,5 +114,5 @@ public class Controller  implements Initializable {
             }
         });
         //initialize();
-    }
+    }*/
 }
