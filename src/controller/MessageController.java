@@ -162,7 +162,7 @@ public class MessageController implements Initializable {
      */
     public File[] loadFiles() {
         final String extension = ".xml";
-        final File currentDir = new File("../mes/");
+        final File currentDir = new File("../xml-messages/");
         return currentDir.listFiles((File pathname) -> pathname.getName().endsWith(extension));
     }
 
