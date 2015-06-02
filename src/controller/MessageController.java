@@ -1,5 +1,6 @@
 package controller;
 
+import com.sun.webkit.ContextMenuItem;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -15,6 +16,7 @@ import model.MessageStakeholder;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import java.io.File;
 import java.io.Serializable;
@@ -48,6 +50,8 @@ public class MessageController implements Initializable {
     @FXML
     private TableColumn<Message, String> subjectColumn;
     @FXML
+    private MenuItem markAsUnread;
+    @FXML
     private TextArea textArea;
     @FXML
     private Label recipientsLabel;
@@ -58,9 +62,20 @@ public class MessageController implements Initializable {
     @FXML
     private Label dateLabel;
 
+
     /*private final Node importanceIcon = new ImageView(
             new Image(getClass().getResourceAsStream("../cat32.png"))
     );*/
+
+    @FXML
+    public void markUnread(){
+        messageTable.getSelectionModel().getSelectedItem().setReadStatus(false);
+        try {
+            saveMessage(messageTable.getSelectionModel().getSelectedItem());
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        }
+    }
 
 
 
@@ -126,6 +141,18 @@ public class MessageController implements Initializable {
         readStatusColumn.setCellValueFactory(cellData -> cellData.getValue().readStatusProperty().asObject());
         senderColumn.setCellValueFactory(cellData -> cellData.getValue().senderProperty().get().nameProperty());
         subjectColumn.setCellValueFactory(cellData -> cellData.getValue().subjectProperty());
+    }
+
+    /**
+     *
+     *
+     */
+    public void saveMessage(Message msg) throws JAXBException{
+        final File currentDir = new File("src/xml-messages");
+        JAXBContext context = JAXBContext.newInstance(Message.class);
+        Marshaller m = context.createMarshaller();
+        m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+        m.marshal(msg, new File(currentDir.getAbsolutePath() + "/" + msg.getId() + ".xml"));
     }
 
     /**
@@ -220,6 +247,11 @@ public class MessageController implements Initializable {
 
     private void setMessageAsRead(Message message){
         message.setReadStatus(true);
+        try {
+            saveMessage(messageTable.getSelectionModel().getSelectedItem());
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -230,7 +262,7 @@ public class MessageController implements Initializable {
 
 
 
-
+//Message
 
 
     private void generateMessages() {
