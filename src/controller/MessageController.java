@@ -24,6 +24,8 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -293,5 +295,10 @@ public class MessageController implements Initializable {
         messageData.add(nachricht2);
         messageData.add(nachricht);
         messageData.add(nachricht2);
+    }
+
+    public void update(Observable o, Object arg) {
+        //o.
+        fillTable(arg.toString());
     }
 }
