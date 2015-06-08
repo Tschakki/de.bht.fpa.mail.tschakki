@@ -9,13 +9,22 @@ import java.io.File;
  */
 public class FileSystemItem extends TreeItem {
     protected File file;
+    private boolean isFirstTimeLeaf;
+    private boolean isLeaf;
 
     public FileSystemItem(File file){
         super(file.getName());
         this.file = file;
+        isFirstTimeLeaf = true;
     }
 
     public boolean isLeaf() {
-        return file.isFile();
+        if (isFirstTimeLeaf) {
+            isFirstTimeLeaf = false;
+            isLeaf = file.isFile();
+            //file.isFile();
+        }
+
+        return isLeaf;
     }//leaf == null ? true : leaf.getValue(); }
 }
