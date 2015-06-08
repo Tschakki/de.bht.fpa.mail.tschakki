@@ -1,5 +1,6 @@
 package controller;
 
+import java.io.File;
 import java.io.Serializable;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -13,6 +14,7 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import model.Directory;
 
 import java.net.URL;
 
@@ -46,6 +48,7 @@ public class FolderController implements Initializable {
             ));
         }
         treeRoot.setExpanded(true);
-        dateiBaum.setRoot(treeRoot);
+        dateiBaum.setRoot(new Directory(new File("TreeRoot")));
+        //dateiBaum.setRoot(treeRoot);
     }
 }

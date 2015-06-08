@@ -1,5 +1,6 @@
 package controller;
 
+import com.sun.webkit.ContextMenuItem;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -15,6 +16,7 @@ import model.MessageStakeholder;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import java.io.File;
 import java.io.Serializable;
@@ -22,6 +24,8 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -48,6 +52,8 @@ public class MessageController implements Initializable {
     @FXML
     private TableColumn<Message, String> subjectColumn;
     @FXML
+    private MenuItem markAsUnread;
+    @FXML
     private TextArea textArea;
     @FXML
     private Label recipientsLabel;
@@ -58,15 +64,38 @@ public class MessageController implements Initializable {
     @FXML
     private Label dateLabel;
 
+
     /*private final Node importanceIcon = new ImageView(
             new Image(getClass().getResourceAsStream("../cat32.png"))
     );*/
+
+    @FXML
+    public void markUnread(){
+        messageTable.getSelectionModel().getSelectedItem().setReadStatus(false);
+        try {
+            saveMessage(messageTable.getSelectionModel().getSelectedItem());
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        }
+    }
 
 
 
     @FXML
     public void initialize(URL url, ResourceBundle rb) {
-        // Initialize the person table with the two columns.
+        connectTableCells();
+        //generateMessages();
+        fillTable("src/xml-messages");
+        System.out.println("initialize messagetable");
+        // Clear person details.
+        showMessageDetails(null);
+        // Listen for selection changes and show the person details when changed.
+        messageTable.getSelectionModel().selectedItemProperty().addListener(
+                (observable, oldValue, newValue) -> showMessageDetails(newValue));
+
+    }
+
+    private void connectTableCells(){
         importanceOfMessageColumn.setCellValueFactory(cellData -> cellData.getValue().importanceOfMessageProperty());
         importanceOfMessageColumn.setCellFactory(cellData -> new TableCell<Message, MessageImportance>() {
             @Override
@@ -114,17 +143,47 @@ public class MessageController implements Initializable {
         readStatusColumn.setCellValueFactory(cellData -> cellData.getValue().readStatusProperty().asObject());
         senderColumn.setCellValueFactory(cellData -> cellData.getValue().senderProperty().get().nameProperty());
         subjectColumn.setCellValueFactory(cellData -> cellData.getValue().subjectProperty());
-        //generateMessages();
-        fillTable("src/xml-messages");
-        System.out.println("initialize messagetable");
-        // Clear person details.
-        showMessageDetails(null);
-        // Listen for selection changes and show the person details when changed.
-        messageTable.getSelectionModel().selectedItemProperty().addListener(
-                (observable, oldValue, newValue) -> showMessageDetails(newValue));
-
     }
 
+    /**
+     *
+     *
+     */
+    public void saveMessage(Message msg) throws JAXBException{
+        final File currentDir = new File("src/xml-messages");
+        JAXBContext context = JAXBContext.newInstance(Message.class);
+        Marshaller m = context.createMarshaller();
+        m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+        m.marshal(msg, new File(currentDir.getAbsolutePath() + "/" + msg.getId() + ".xml"));
+    }
+
+    /**
+     * Returns all .xml files from the given path as an Array filled with files.
+     *
+     * @return File[]
+     */
+    public File[] loadFiles() {
+        final String extension = ".xml";
+        final File currentDir = new File("../xml-messages/");
+        return currentDir.listFiles((File pathname) -> pathname.getName().endsWith(extension));
+    }
+
+    /**
+     * This method creates Message objects out of XML-files.
+     */
+    public void createExampleMessages() {
+        File[] files = loadFiles();
+        for (File file : files) {
+            try {
+                JAXBContext jaxbContext = JAXBContext.newInstance(Message.class);
+                Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+                Message msg = (Message) jaxbUnmarshaller.unmarshal(file);
+                messageData.add(msg);
+            } catch (JAXBException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     public ObservableList<Message> getMessageData() {
         return messageData;
@@ -138,6 +197,7 @@ public class MessageController implements Initializable {
      */
     private void showMessageDetails(Message message) {
         if (message != null) {
+            setMessageAsRead(message);
             // Fill the labels with info from the person object.
             fromLabel.setText(String.valueOf(message.getSender().getMailAddress()));
             recipientsLabel.setText(String.valueOf(message.getRecipients().get(0).getMailAddress()));
@@ -187,6 +247,14 @@ public class MessageController implements Initializable {
         messageTable.setItems(messageData);
     }
 
+    private void setMessageAsRead(Message message){
+        message.setReadStatus(true);
+        try {
+            saveMessage(messageTable.getSelectionModel().getSelectedItem());
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        }
+    }
 
 
 
@@ -196,6 +264,7 @@ public class MessageController implements Initializable {
 
 
 
+//Message
 
 
     private void generateMessages() {
@@ -226,5 +295,10 @@ public class MessageController implements Initializable {
         messageData.add(nachricht2);
         messageData.add(nachricht);
         messageData.add(nachricht2);
+    }
+
+    public void update(Observable o, Object arg) {
+        //o.
+        fillTable(arg.toString());
     }
 }

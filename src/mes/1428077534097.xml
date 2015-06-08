@@ -1,17 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <message>
-    <id>1428077534101</id>
+    <id>1428077534097</id>
     <importanceOfMessage>LOW</importanceOfMessage>
-    <readStatus>false</readStatus>
-    <receivedAt>2014-09-27T22:23</receivedAt>
+    <readStatus>true</readStatus>
+    <receivedAt>2014-01-07T05:44</receivedAt>
     <recipients>
         <recipient>
-            <mailAddress>s12345@beuth-hochschule.de</mailAddress>
-            <name>John Doe</name>
-        </recipient>
-        <recipient>
-            <mailAddress>info@mailer.netflix.com</mailAddress>
-            <name>Netflix</name>
+            <mailAddress>info@meetup.com</mailAddress>
+            <name>Support</name>
         </recipient>
     </recipients>
     <sender>
