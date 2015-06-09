@@ -85,7 +85,7 @@ public class MessageController implements Initializable, Observer {
     public void initialize(URL url, ResourceBundle rb) {
         connectTableCells();
         //generateMessages();
-        fillTable("src/xml-messages");
+        fillTable("TreeRoot/INBOX");
         System.out.println("initialize messagetable");
         // Clear person details.
         showMessageDetails(null);
@@ -157,33 +157,6 @@ public class MessageController implements Initializable, Observer {
         m.marshal(msg, new File(currentDir.getAbsolutePath() + "/" + msg.getId() + ".xml"));
     }
 
-    /**
-     * Returns all .xml files from the given path as an Array filled with files.
-     *
-     * @return File[]
-     */
-    public File[] loadFiles() {
-        final String extension = ".xml";
-        final File currentDir = new File("../xml-messages/");
-        return currentDir.listFiles((File pathname) -> pathname.getName().endsWith(extension));
-    }
-
-    /**
-     * This method creates Message objects out of XML-files.
-     */
-    public void createExampleMessages() {
-        File[] files = loadFiles();
-        for (File file : files) {
-            try {
-                JAXBContext jaxbContext = JAXBContext.newInstance(Message.class);
-                Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-                Message msg = (Message) jaxbUnmarshaller.unmarshal(file);
-                messageData.add(msg);
-            } catch (JAXBException e) {
-                e.printStackTrace();
-            }
-        }
-    }
 
     public ObservableList<Message> getMessageData() {
         return messageData;
@@ -243,6 +216,10 @@ public class MessageController implements Initializable, Observer {
         File file = new File(path);
         for (File each : file.listFiles()) {
             messageData.add(readMessage(each));
+            //System.out.println("EACH " + each);
+        }
+        for (int i = 0; i<messageData.size();i++){
+            System.out.println("MESSAGEDATA "+i+ " "+messageData.get(i));
         }
         messageTable.setItems(messageData);
     }
@@ -256,6 +233,12 @@ public class MessageController implements Initializable, Observer {
         }
     }
 
+    public void update(Observable o, Object arg) {
+        System.out.println("ARG Text : " + "TreeRoot/" + arg.toString());
+        String pfad = "TreeRoot/"+arg.toString();
+        fillTable(pfad);
+    }
+
 
 
 
@@ -267,7 +250,7 @@ public class MessageController implements Initializable, Observer {
 //Message
 
 
-    private void generateMessages() {
+/*    private void generateMessages() {
         int index = 0;
         MessageStakeholder stakeHolder = new MessageStakeholder("Tschakki", "tschakki@mehli.org");
         LinkedList<MessageStakeholder> absenderListe = new LinkedList<MessageStakeholder>();
@@ -295,10 +278,36 @@ public class MessageController implements Initializable, Observer {
         messageData.add(nachricht2);
         messageData.add(nachricht);
         messageData.add(nachricht2);
-    }
+    }*/
 
-    public void update(Observable o, Object arg) {
-        //o.
-        fillTable("TreeRoot/"+arg.toString());
-    }
+    /**
+     * Returns all .xml files from the given path as an Array filled with files.
+     *
+     * @return File[]
+     */
+    /*public File[] loadFiles() {
+        final String extension = ".xml";
+        final File currentDir = new File("../xml-messages/");
+        return currentDir.listFiles((File pathname) -> pathname.getName().endsWith(extension));
+    }*/
+
+    /**
+     * This method creates Message objects out of XML-files.
+     */
+    /*public void createExampleMessages() {
+        File[] files = loadFiles();
+        for (File file : files) {
+            try {
+                JAXBContext jaxbContext = JAXBContext.newInstance(Message.class);
+                Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+                Message msg = (Message) jaxbUnmarshaller.unmarshal(file);
+                messageData.add(msg);
+            } catch (JAXBException e) {
+                e.printStackTrace();
+            }
+        }
+    }*/
+
+
+
 }

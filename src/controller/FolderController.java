@@ -34,6 +34,7 @@ public class
     private TreeView<String> dateiBaum;
     private Directory rootDir = new Directory(new File("TreeRoot"));
     private FolderSelectionObservable treeObservable;
+    private MessageController msgController;
 
     /*private final Node folderIcon = new ImageView(
             new Image(getClass().getResourceAsStream("../cat16.png"))
@@ -59,7 +60,9 @@ public class
         treeRoot.setExpanded(true);
 
         dateiBaum.setRoot(rootDir);
+        msgController = new MessageController();
         treeObservable = new FolderSelectionObservable();
+        treeObservable.addObserver(msgController);
         treeListener();
 
     }
