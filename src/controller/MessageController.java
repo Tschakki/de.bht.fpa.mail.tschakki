@@ -299,6 +299,6 @@ public class MessageController implements Initializable, Observer {
 
     public void update(Observable o, Object arg) {
         //o.
-        fillTable(arg.toString());
+        fillTable("TreeRoot/"+arg.toString());
     }
 }

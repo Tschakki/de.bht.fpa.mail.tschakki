@@ -2,6 +2,9 @@ package controller;
 
 import java.io.File;
 import java.io.Serializable;
+
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -29,6 +32,8 @@ public class
 
     @FXML
     private TreeView<String> dateiBaum;
+    private Directory rootDir = new Directory(new File("TreeRoot"));
+    private FolderSelectionObservable treeObservable;
 
     /*private final Node folderIcon = new ImageView(
             new Image(getClass().getResourceAsStream("../cat16.png"))
@@ -52,21 +57,28 @@ public class
             ));
         }
         treeRoot.setExpanded(true);
-        dateiBaum.setRoot(new Directory(new File("TreeRoot")));
-        //dateiBaum.setRoot(treeRoot);
+
+        dateiBaum.setRoot(rootDir);
+        treeObservable = new FolderSelectionObservable();
+        treeListener();
+
     }
 
-    /*treeView.getSelectionModel().selectedItemProperty().addListener( new ChangeListener() {
+    public void treeListener(){
+        dateiBaum.getSelectionModel().selectedItemProperty()
+                .addListener(new ChangeListener<TreeItem<String>>() {
 
-        @Override
-        public void changed(ObservableValue observable, Object oldValue,
-                Object newValue) {
+                    @Override
+                    public void changed(
+                            ObservableValue<? extends TreeItem<String>> observable,
+                            TreeItem<String> old_val, TreeItem<String> new_val) {
+                        TreeItem<String> selectedItem = new_val;
+                        System.out.println("Selected Text : " + selectedItem.getValue());
+                        treeObservable.changeSomething(selectedItem.getValue());
+                        // do what ever you want
+                    }
 
-            TreeItem<String> selectedItem = (TreeItem<String>) newValue;
-            System.out.println("Selected Text : " + selectedItem.getValue());
-            // do what ever you want
-        }
-
-    });*/
+                });
+    }
 
 }
