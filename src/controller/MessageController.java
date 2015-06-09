@@ -34,7 +34,7 @@ import java.util.prefs.Preferences;
 /**
  * Created by tschakki on 04.05.15.
  */
-public class MessageController implements Initializable {
+public class MessageController implements Initializable, Observer {
 
     private ObservableList<Message> messageData = FXCollections.observableArrayList();
 

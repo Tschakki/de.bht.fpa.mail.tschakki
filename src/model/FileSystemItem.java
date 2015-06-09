@@ -24,7 +24,6 @@ public class FileSystemItem extends TreeItem {
             isLeaf = file.isFile();
             //file.isFile();
         }
-
         return isLeaf;
     }//leaf == null ? true : leaf.getValue(); }
 }

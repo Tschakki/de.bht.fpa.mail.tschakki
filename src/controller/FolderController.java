@@ -6,6 +6,9 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+
+import java.util.Observable;
+import java.util.Observer;
 import java.util.ResourceBundle;
 
 import javafx.scene.Node;
@@ -21,7 +24,8 @@ import java.net.URL;
 /**
  * Created by tschakki on 04.05.15.
  */
-public class FolderController implements Initializable {
+public class
+        FolderController implements Initializable {
 
     @FXML
     private TreeView<String> dateiBaum;
@@ -51,4 +55,18 @@ public class FolderController implements Initializable {
         dateiBaum.setRoot(new Directory(new File("TreeRoot")));
         //dateiBaum.setRoot(treeRoot);
     }
+
+    /*treeView.getSelectionModel().selectedItemProperty().addListener( new ChangeListener() {
+
+        @Override
+        public void changed(ObservableValue observable, Object oldValue,
+                Object newValue) {
+
+            TreeItem<String> selectedItem = (TreeItem<String>) newValue;
+            System.out.println("Selected Text : " + selectedItem.getValue());
+            // do what ever you want
+        }
+
+    });*/
+
 }
