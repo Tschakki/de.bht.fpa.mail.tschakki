@@ -85,7 +85,7 @@ public class MessageController implements Initializable, Observer {
     public void initialize(URL url, ResourceBundle rb) {
         connectTableCells();
         //generateMessages();
-        fillTable("TreeRoot/INBOX");
+        fillTable("TreeRoot/SENT");
         System.out.println("initialize messagetable");
         // Clear person details.
         showMessageDetails(null);
@@ -214,12 +214,13 @@ public class MessageController implements Initializable, Observer {
      */
     private void fillTable(String path) {
         File file = new File(path);
+        //messageData.removeAll();
         for (File each : file.listFiles()) {
             messageData.add(readMessage(each));
             //System.out.println("EACH " + each);
         }
-        for (int i = 0; i<messageData.size();i++){
-            System.out.println("MESSAGEDATA "+i+ " "+messageData.get(i));
+        for (int i = 0; i<messageData.size();i++) {
+            System.out.println("MESSAGEDATA " + i + " " + messageData.get(i));
         }
         messageTable.setItems(messageData);
     }
@@ -236,6 +237,7 @@ public class MessageController implements Initializable, Observer {
     public void update(Observable o, Object arg) {
         System.out.println("ARG Text : " + "TreeRoot/" + arg.toString());
         String pfad = "TreeRoot/"+arg.toString();
+        messageTable.getItems().clear();
         fillTable(pfad);
     }
 

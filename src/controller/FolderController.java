@@ -61,7 +61,7 @@ public class
 
         dateiBaum.setRoot(rootDir);
         msgController = new MessageController();
-        treeObservable = new FolderSelectionObservable();
+        treeObservable = FolderSelectionObservable.getInstance();
         treeObservable.addObserver(msgController);
         treeListener();
 
