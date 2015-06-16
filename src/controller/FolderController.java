@@ -33,8 +33,8 @@ public class
     @FXML
     private TreeView<String> dateiBaum;
     private Directory rootDir = new Directory(new File("TreeRoot"));
-    private FolderSelectionObservable treeObservable;
-    private MessageController msgController;
+    //private FolderSelectionObservable treeObservable;
+    //private MessageController msgController;
 
     /*private final Node folderIcon = new ImageView(
             new Image(getClass().getResourceAsStream("../cat16.png"))
@@ -60,9 +60,9 @@ public class
         treeRoot.setExpanded(true);
 
         dateiBaum.setRoot(rootDir);
-        msgController = new MessageController();
-        treeObservable = FolderSelectionObservable.getInstance();
-        treeObservable.addObserver(msgController);
+        //msgController = new MessageController();
+        //treeObservable = FolderSelectionObservable.getInstance();
+        //treeObservable.addObserver(msgController);
         treeListener();
 
     }
@@ -77,7 +77,7 @@ public class
                             TreeItem<String> old_val, TreeItem<String> new_val) {
                         TreeItem<String> selectedItem = new_val;
                         System.out.println("Selected Text : " + selectedItem.getValue());
-                        treeObservable.changeSomething(selectedItem.getValue());
+                        FolderSelectionObservable.getInstance().changeSomething(selectedItem.getValue());
                         // do what ever you want
                     }
 

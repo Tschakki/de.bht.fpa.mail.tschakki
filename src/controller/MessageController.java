@@ -85,8 +85,9 @@ public class MessageController implements Initializable, Observer {
     public void initialize(URL url, ResourceBundle rb) {
         connectTableCells();
         //generateMessages();
-        fillTable("TreeRoot/SENT");
+        fillTable("TreeRoot/INBOX");
         System.out.println("initialize messagetable");
+        FolderSelectionObservable.getInstance().addObserver(this);
         // Clear person details.
         showMessageDetails(null);
         // Listen for selection changes and show the person details when changed.
@@ -150,7 +151,7 @@ public class MessageController implements Initializable, Observer {
      *
      */
     public void saveMessage(Message msg) throws JAXBException{
-        final File currentDir = new File("src/xml-messages");
+        final File currentDir = new File("TreeRoot/INBOX");
         JAXBContext context = JAXBContext.newInstance(Message.class);
         Marshaller m = context.createMarshaller();
         m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
@@ -214,15 +215,13 @@ public class MessageController implements Initializable, Observer {
      */
     private void fillTable(String path) {
         File file = new File(path);
-        //messageData.removeAll();
         for (File each : file.listFiles()) {
             messageData.add(readMessage(each));
-            //System.out.println("EACH " + each);
         }
-        for (int i = 0; i<messageData.size();i++) {
-            System.out.println("MESSAGEDATA " + i + " " + messageData.get(i));
+        if (messageData != null) {
+            messageTable.setItems(messageData);
         }
-        messageTable.setItems(messageData);
+
     }
 
     private void setMessageAsRead(Message message){
