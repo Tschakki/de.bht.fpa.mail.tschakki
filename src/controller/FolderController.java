@@ -78,7 +78,6 @@ public class
                         TreeItem<String> selectedItem = new_val;
                         System.out.println("Selected Text : " + selectedItem.getValue());
                         FolderSelectionObservable.getInstance().changeSomething(selectedItem.getValue());
-                        // do what ever you want
                     }
 
                 });

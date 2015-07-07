@@ -191,37 +191,15 @@ public class MessageController implements Initializable, Observer {
     }
 
     /**
-     * Opens the xml file, reads all the information and returns a new message
-     * object.
-     *
-     * @param file The passed xml file
-     * @return The resulting Message object
-     */
-    private Message readMessage(File file) {
-        try {
-            JAXBContext jc = JAXBContext.newInstance(Message.class);
-            Unmarshaller um = jc.createUnmarshaller();
-            return (Message) um.unmarshal(file);
-        } catch (JAXBException ex) {
-            Logger.getLogger(MessageController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
-    }
-
-    /**
      * Fills the table by the xml files within the passed path.
      *
      * @param path the path containing the xml files.
      */
     private void fillTable(String path) {
-        File file = new File(path);
-        for (File each : file.listFiles()) {
-            messageData.add(readMessage(each));
-        }
-        if (messageData != null) {
-            messageTable.setItems(messageData);
-        }
-
+        //File file = new File(path);
+        FpaMessageLoaderImpl messageLoader = new FpaMessageLoaderImpl();
+        messageTable.setItems(messageLoader.getMessages(path));
+        //if (each.isFile() && each.getName().endsWith(".xml"))
     }
 
     private void setMessageAsRead(Message message){
