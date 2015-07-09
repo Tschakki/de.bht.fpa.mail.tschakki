@@ -25,7 +25,7 @@ public class ContainsSenderMailFilter extends Filter{
         ObservableList<Message> msgList = fpaMessageLoader.getMessages(path);
         ObservableList<Message> filteredMsgList = FXCollections.observableArrayList();
         for (Message msg : msgList){
-            if (msg.getSender().toString().contains(filterCriteria)){
+            if (msg.getSender().getMailAddress().toString().contains(filterCriteria)){
                 filteredMsgList.add(msg);
             }
         }

@@ -198,7 +198,11 @@ public class MessageController implements Initializable, Observer {
     private void fillTable(String path) {
         //File file = new File(path);
         FpaMessageLoaderImpl messageLoader = new FpaMessageLoaderImpl();
-        messageTable.setItems(messageLoader.getMessages(path));
+        IsSubjectFilter subjectFilter = new IsSubjectFilter(messageLoader, "Ihre Bestellung");
+        ContainsSenderMailFilter senderFilter = new ContainsSenderMailFilter(messageLoader, "info@mailer.netflix.com");
+//        messageTable.setItems(subjectFilter.getMessages(path));
+        messageTable.setItems(senderFilter.getMessages(path));
+//        messageTable.setItems(messageLoader.getMessages(path));
         //if (each.isFile() && each.getName().endsWith(".xml"))
     }
 
